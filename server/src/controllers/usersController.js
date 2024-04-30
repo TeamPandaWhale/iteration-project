@@ -4,7 +4,7 @@ const ApiGames = require('../models/gamesModel');
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 
-usersController = {};
+const usersController = {};
 
 // get data from db and store to user.likedGames
 usersController.likeGame = async (req, res, next) => {
@@ -20,11 +20,8 @@ usersController.likeGame = async (req, res, next) => {
     // check if game has been already liked by user
     const userData = await Users.findOne({ username: username });
     // if it hasn't been liked add to likedGames under that user
-    if (!userData.likedGames.find(likedGame => likedGame.name === game.name)) {
-      await Users.updateOne(
-        { username: username },
-        { $push: { likedGames: game } }
-      );
+    if (!userData.likedGames.find((likedGame) => likedGame.name === game.name)) {
+      await Users.updateOne({ username: username }, { $push: { likedGames: game } });
       res.locals.gameLiked = game;
     } else {
       res.locals.gameLiked = 'Game already liked!';
@@ -46,10 +43,7 @@ usersController.unlikeGame = async (req, res, next) => {
     const game = await ApiGames.findOne({
       name: gameName,
     });
-    await Users.updateOne(
-      { username: username },
-      { $pull: { likedGames: { id: game.id } } }
-    );
+    await Users.updateOne({ username: username }, { $pull: { likedGames: { id: game.id } } });
     const user = await Users.findOne({ username: username });
     res.locals.likedGames = user.likedGames;
     next();

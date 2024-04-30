@@ -73,7 +73,7 @@ const LoginPage = ({ setIsAuthenticated, setInitialGames, setUser }) => {
     'Fighting',
   ];
 
-  const handleSetInitialData = async e => {
+  const handleSetInitialData = async () => {
     try {
       const response = await fetch(`http://localhost:3000/games`, {
         method: 'POST',
