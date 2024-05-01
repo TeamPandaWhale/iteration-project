@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 
+import AppError from './utils/AppError.js';
+
 import { apiSave, getGames, filterGames } from './controllers/gamesController.js';
 import {
   likeGame,
@@ -57,7 +59,7 @@ app.post('/createuser', validateUser, createUser, (req, res) => {
   res.status(200).json(res.locals.user);
 });
 
-app.post('/login', verifyUser, (req, res) => {
+app.post('/login', validateUser, verifyUser, (req, res) => {
   // if res.locals.user has value then user logged in
   // if it has no value then user failed to log in
   res.status(200).json(res.locals.user);
@@ -68,17 +70,20 @@ app.use('*', (req, res) => {
   res.sendStatus(404);
 });
 
-// gloabl error handler
-// eslint-disable-next-line no-unused-vars
+// Global error handling middleware
 app.use((err, req, res, next) => {
-  const defaultErr = {
-    log: 'Express error handler caught unknown middleware error',
-    status: 500,
-    message: { err: 'An error occurred' },
-  };
-  const { log, status, message } = { ...defaultErr, ...err };
-  console.log(log);
-  res.status(status).json(message);
+  // Log timestamp
+  console.log(`\n${new Date().toLocaleString()}`);
+
+  // Handle operational errors
+  if (err instanceof AppError) {
+    console.log(`${err.name}: ${err.message}`);
+    return res.status(err.statusCode).json({ error: err.message });
+  }
+
+  // Handle generic and/or programmer errors
+  console.error(err.message);
+  res.status(500).json({ error: 'Something went wrong!' });
 });
 
 app.listen(PORT, () => {
