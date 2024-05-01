@@ -1,19 +1,19 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const bcrypt = require('bcryptjs');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const SALT_WORK_FACTOR = 10;
 
-const user = new Schema({
+const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   likedGames: Array,
 });
 
-user.pre('save', async function (next) {
+userSchema.pre('save', async function (next) {
   try {
     const hash = await bcrypt.hash(this.password, SALT_WORK_FACTOR);
     this.password = hash;
+    this.likedGames = [];
     next();
   } catch (error) {
     return next({
@@ -22,4 +22,4 @@ user.pre('save', async function (next) {
   }
 });
 
-module.exports = mongoose.model('users', user);
+export default mongoose.model('user', userSchema);

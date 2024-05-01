@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
 
-const gamesSchema = new Schema({
+const gameSchema = new mongoose.Schema({
   id: { type: Number, required: true },
   name: { type: String, required: true },
   cover: String,
@@ -11,4 +10,4 @@ const gamesSchema = new Schema({
   genres: Array,
 });
 
-module.exports = mongoose.model('apiGames', gamesSchema);
+export default mongoose.model('game', gameSchema);
