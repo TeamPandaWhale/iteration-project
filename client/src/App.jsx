@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { createRoot } from 'react-dom/client';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import './stylesheets/styles.scss';
@@ -43,5 +42,4 @@ const App = () => {
   );
 };
 
-const root = createRoot(document.getElementById('root'));
-root.render(<App />);
+export default App;
