@@ -10,14 +10,15 @@ import MainPage from './pages/Main.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [initialGames, setInitialGames] = useState([]);
-  const [user, setUser] = useState('');
+  // Transitioned to Redux Toolkit
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [initialGames, setInitialGames] = useState([]);
+  // const [user, setUser] = useState('');
   return (
     <BrowserRouter>
       <Routes>
         <Route
-          path="/login"
+          path='/login'
           element={
             <LoginPage
               setIsAuthenticated={setIsAuthenticated}
@@ -26,17 +27,17 @@ const App = () => {
             />
           }
         />
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path='/signup' element={<SignupPage />} />
         {/* <Route path="/" element={<MainPage initialGames={initialGames}/>} /> */}
         <Route
-          path="/home"
+          path='/home'
           element={
             <ProtectedRoute isAuthenticated={isAuthenticated}>
               <MainPage initialGames={initialGames} user={user} />
             </ProtectedRoute>
           }
         />
-        <Route path="/" element={<Navigate replace to="/login" />} />
+        <Route path='/' element={<Navigate replace to='/login' />} />
       </Routes>
     </BrowserRouter>
   );

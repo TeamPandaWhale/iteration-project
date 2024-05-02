@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   username: '',
   password: '',
-  error: ''
+  error: '',
 };
 
 export const loginSlice = createSlice({
@@ -19,7 +19,7 @@ export const loginSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
-  }
+  },
 });
 
 export const { setUsername, setPassword, setError } = loginSlice.actions;
