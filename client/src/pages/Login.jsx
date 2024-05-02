@@ -6,10 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import '../stylesheets/Login.scss';
 
 const LoginPage = ({ setIsAuthenticated, setInitialGames, setUser }) => {
-  //State hooks for username and password
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  // State hooks for username and password
+  
+  // Transitioned to Redux Toolkit
+  // const [username, setUsername] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
@@ -31,6 +33,7 @@ const LoginPage = ({ setIsAuthenticated, setInitialGames, setUser }) => {
 
       if (response.ok && data) {
         setIsAuthenticated(true);
+        
         setUser(data);
         navigate('/home');
       } else {
