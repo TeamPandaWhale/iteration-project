@@ -7,38 +7,25 @@ const asyncHandler = (fn) => (req, res, next) => Promise.resolve(fn(req, res, ne
 
 // get data from db and send to frontend
 export const getGames = asyncHandler(async (req, res, next) => {
-  try {
-    // find games from db depending on filters sent from frontend
-    // req.body should be something like { platforms: [platform1, platform2], genres: [genre1, genre2] }
-    const { platforms, genres } = req.body;
-    res.locals.games = await Game.find({
-      platforms: { $in: platforms },
-      genres: { $in: genres },
-    });
-    next();
-  } catch (error) {
-    console.log(error);
-    next({
-      message: error,
-    });
-  }
+  // find games from db depending on filters sent from frontend
+  // req.body should be something like { platforms: [platform1, platform2], genres: [genre1, genre2] }
+  const { platforms, genres } = req.body;
+  res.locals.games = await Game.find({
+    platforms: { $in: platforms },
+    genres: { $in: genres },
+  });
+  next();
 });
 
 export const filterGames = asyncHandler(async (req, res, next) => {
-  try {
-    const user = await User.findOne({ username: req.body.username });
+  const user = await User.findOne({ username: req.body.username });
 
-    const excludedGames = user.likedGames;
-    const excludedNames = excludedGames.map((game) => game.name);
+  const excludedGames = user.likedGames;
+  const excludedNames = excludedGames.map((game) => game.name);
 
-    const filteredGames = res.locals.games.filter((game) => !excludedNames.includes(game.name));
-    res.locals.filteredGames = filteredGames;
-    console.log('filtered', Array.isArray(res.locals.filteredGames));
+  const filteredGames = res.locals.games.filter((game) => !excludedNames.includes(game.name));
+  res.locals.filteredGames = filteredGames;
+  console.log('filtered', Array.isArray(res.locals.filteredGames));
 
-    next();
-  } catch (error) {
-    next({
-      message: error,
-    });
-  }
+  next();
 });
