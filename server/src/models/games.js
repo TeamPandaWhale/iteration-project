@@ -24,10 +24,11 @@ const Games = {};
 
 Games.findOneById = (id) => idIndex.get(id);
 
-Games.findAllById = (ids) => ids.map((id) => idIndex.get(id));
+Games.findAllById = (ids) => ids.filter((id) => idIndex.has(id)).map((id) => idIndex.get(id));
 
 Games.findOneByName = (name) => nameIndex.get(name);
 
-Games.findAllByName = (names) => names.map((name) => nameIndex.get(name));
+Games.findAllByName = (names) =>
+  names.filter((name) => nameIndex.has(name)).map((name) => nameIndex.get(name));
 
 export default Games;
