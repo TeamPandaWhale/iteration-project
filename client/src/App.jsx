@@ -1,13 +1,10 @@
-import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
-import './stylesheets/styles.scss';
-
 import LoginPage from './pages/Login.jsx';
 import SignupPage from './pages/Signup.jsx';
 import MainPage from './pages/Main.jsx';
-
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+
+import './stylesheets/styles.scss';
 
 const App = () => {
   // Transitioned to Redux Toolkit
@@ -20,11 +17,12 @@ const App = () => {
         <Route
           path='/login'
           element={
-            <LoginPage
-              setIsAuthenticated={setIsAuthenticated}
-              setInitialGames={setInitialGames}
-              setUser={setUser}
-            />
+            // <LoginPage
+            //   setIsAuthenticated={setIsAuthenticated}
+            //   setInitialGames={setInitialGames}
+            //   setUser={setUser}
+            // />
+            <LoginPage />
           }
         />
         <Route path='/signup' element={<SignupPage />} />
@@ -32,8 +30,11 @@ const App = () => {
         <Route
           path='/home'
           element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
-              <MainPage initialGames={initialGames} user={user} />
+            // <ProtectedRoute isAuthenticated={isAuthenticated}>
+            //   <MainPage initialGames={initialGames} user={user} />
+            // </ProtectedRoute>
+            <ProtectedRoute>
+              <MainPage />
             </ProtectedRoute>
           }
         />

@@ -1,29 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { setUsername, setPassword, setError } from '../reducers/loginSlice.js';
+import { setIsAuthenticated, setInitialGames, setUser } from '../reducers/appSlice.js';
 
 import '../stylesheets/Login.scss';
-import { setError, setPassword, setUsername } from '../reducers/loginSlice';
 
-const LoginPage = ({ setIsAuthenticated, setInitialGames, setUser }) => {
+const LoginPage = () => {
+  // Removed props. before: ({ setIsAuthenticated, setInitialGames, setUser })
+
   // State hooks for username and password
 
   // Transitioned to Redux Toolkit
+
   // const [username, setUsername] = useState('');
   // const [password, setPassword] = useState('');
   // const [error, setError] = useState('');
 
   const navigate = useNavigate();
-  // added dispatch hook
+  // Redux hooks
   const dispatch = useDispatch();
+  const username = useSelector((state) => state.signup.username);
+  const password = useSelector((state) => state.signup.password);
+  const error = useSelector((state) => state.signup.error);
 
   // Handler for submitting
   const handleLogin = async (e) => {
     e.preventDefault();
     // [Not Done yet] backend login engagement here
-
     // setError('');
     dispatch(setError(''));
 
@@ -96,8 +102,7 @@ const LoginPage = ({ setIsAuthenticated, setInitialGames, setUser }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          // username: username,
-          username: useSelector((state) => state.login.username),
+          username: username,
           platforms: platforms,
           genres: genres,
         }),
@@ -128,23 +133,11 @@ const LoginPage = ({ setIsAuthenticated, setInitialGames, setUser }) => {
         {error && <div className='error-message'>{error}</div>}
         <div className='input-field'>
           <label htmlFor='username'>Username</label>
-          {/* <input type='text' id='username' value={username} onChange={handleUsernameChange} /> */}
-          <input
-            type='text'
-            id='username'
-            value={(state) => state.login.username}
-            onChange={handleUsernameChange}
-          />
+          <input type='text' id='username' value={username} onChange={handleUsernameChange} />
         </div>
         <div className='input-field'>
           <label htmlFor='password'>Password</label>
-          {/* <input type='password' id='password' value={password} onChange={handlePasswordChange} /> */}
-          <input
-            type='password'
-            id='password'
-            value={(state) => state.login.password}
-            onChange={handlePasswordChange}
-          />
+          <input type='password' id='password' value={password} onChange={handlePasswordChange} />
         </div>
         <div className='action-buttons'>
           <button type='submit'>Login</button>

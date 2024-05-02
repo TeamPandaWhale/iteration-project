@@ -1,25 +1,33 @@
 import React, { useState } from 'react';
 import Header from '../components/Header.jsx';
-
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUsername, setPassword, setError } from '../reducers/signupSlice.js';
+
 import '../stylesheets/Login.scss';
 import '../stylesheets/Signup.scss';
 
 const SignupPage = () => {
   // Transitioned to Redux Toolkit
+
   // const [username, setUsername] = useState('');
   // const [password, setPassword] = useState('');
   // const [error, setError] = useState('');
 
   const navigate = useNavigate();
-  // added dispatch hook
+  // Redux hooks
   const dispatch = useDispatch();
+  const username = useSelector((state) => state.signup.username);
+  const password = useSelector((state) => state.signup.password);
+  const error = useSelector((state) => state.signup.error);
 
   // Handler for submitting
   const handleSignup = async (e) => {
     e.preventDefault();
     // [Not Done yet] backend signup engagement here
-    setError('');
+    // setError('');
+    dispatch(setError(''));
+
     try {
       const response = await fetch(`http://localhost:3000/createuser`, {
         method: 'POST',
@@ -35,20 +43,24 @@ const SignupPage = () => {
         navigate('/login');
       } else {
         console.log(response);
-        setError('Username already exists');
+        // setError('Username already exists');
+        dispatch(setError('Username already exists'));
       }
     } catch (err) {
-      setError('Invalid username or password');
+      // setError('Invalid username or password');
+      dispatch(setError('Invalid username or password'));
     }
   };
 
   // Handler for user input fetching
   const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+    // setUsername(e.target.value);
+    dispatch(setUsername(e.target.value));
   };
 
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+    // setPassword(e.target.value);
+    dispatch(setPassword(e.target.value));
   };
 
   return (

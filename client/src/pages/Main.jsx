@@ -1,13 +1,20 @@
-import { useState, useEffect } from 'react';
 import Header from '../components/Header.jsx';
-
 import CardList from '../components/CardList.jsx';
 import PlatformFilter from '../components/PlatformFilter.jsx';
 import GenreFilter from '../components/GenreFilter.jsx';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  setGames,
+  setCurrentGames,
+  setCurrentPage,
+  setActivePFilter,
+  setActiveGFilter,
+} from '../reducers/appSlice.js';
 
 import '../stylesheets/Main.scss';
 
-const Main = ({ initialGames, user }) => {
+const Main = () => {
+  // removed initialGames and user from props. before: ({ initialGames, user })
   //-----------------------game cards--------------------------------
   const mockGames = [
     {
@@ -61,32 +68,56 @@ const Main = ({ initialGames, user }) => {
     },
   ];
 
-  const itemsPerPage = 4;
   // Game states
-  const [games, setGames] = useState(initialGames); // Will be updated with the data from backend
-  const [currentGames, setCurrentGames] = useState(
-    // Game to display on one page
-    // games.slice(0, itemsPerPage) // Start with the first page
-    [],
-  );
-  console.log('games', games);
+
+  // Transitioned to Redux Toolkit
+
+  // const [games, setGames] = useState(initialGames);
+  // Will be updated with the data from backend
+
+  // const [currentGames, setCurrentGames] = useState([]);
+  // Game to display on one page
+  // games.slice(0, itemsPerPage)
+  // Start with the first page
+
+  // console.log('games', games);
+
+  // const [currentPage, setCurrentPage] = useState(0);
   // Current page index, items per page, and page count
-  //[Remember to replace mockGames to fetched data]
-  const [currentPage, setCurrentPage] = useState(0);
+  // [Remember to replace mockGames to fetched data]
+
+  // Redux hooks
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.app.user);
+  const games = useSelector((state) => state.app.games);
+  const currentGames = useSelector((state) => state.app.currentGames);
+  const currentPage = useSelector((state) => state.app.currentPage);
+  const activePFilter = useSelector((state) => state.app.activePFilter);
+  const activeGFilter = useSelector((state) => state.app.activeGFilter);
+  // The following is hardcoded above, can activate hooks after removing hardcode
+  // const platforms = useSelector((state) => state.app.platforms);
+  // const genre = useSelector((state) => state.app.genre);
+
+  const itemsPerPage = 4;
   const pageCount = Math.ceil(games.length / itemsPerPage);
 
   // Updates games whenever games state or currentPage state change
   useEffect(() => {
-    setCurrentGames(games.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage));
+    // setCurrentGames(games.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage));
+    useDispatch(
+      setCurrentGames(games.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)),
+    );
   }, [games, currentPage]);
 
   // Handlers for next and previous buttons
   const goToNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, pageCount - 1));
+    // setCurrentPage((prevPage) => Math.min(prevPage + 1, pageCount - 1));
+    dispatch(setCurrentPage((prevPage) => Math.min(prevPage + 1, pageCount - 1)));
   };
 
   const goToPreviousPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
+    // setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
+    dispatch(setCurrentPage((prevPage) => Math.max(prevPage - 1, 0)));
   };
 
   //-----------------------filters--------------------------------
@@ -113,32 +144,39 @@ const Main = ({ initialGames, user }) => {
     'Fighting',
   ];
 
-  const [activePFilter, setActivePFilter] = useState(platforms); // Platform filters
-  const [activeGFilter, setActiveGFilter] = useState(genre); // Genre filters
+  // Transitioned to Redux Toolkit
+
+  // const [activePFilter, setActivePFilter] = useState(platforms);
+  // Platform filters
+  // const [activeGFilter, setActiveGFilter] = useState(genre);
+  // Genre filters
 
   //The filters start with all enabled and switch to a mode where only selected filters are active once a user starts interacting with them
 
   const handlePFilterSelect = (selectedPlatform) => {
-    setActivePFilter((prevFilters) => {
-      // Check if we are starting from a state where all filters are active
-      const allFiltersActive = prevFilters.length === platforms.length;
+    dispatch(
+      // just added dispatch to original code
+      setActivePFilter((prevFilters) => {
+        // Check if we are starting from a state where all filters are active
+        const allFiltersActive = prevFilters.length === platforms.length;
 
-      if (allFiltersActive) {
-        // If all filters are active and one is clicked, switch to only that filter
-        return [selectedPlatform];
-      } else {
-        // Check if the clicked filter is currently active
-        if (prevFilters.includes(selectedPlatform)) {
-          // If it is active, remove it
-          const filteredFilters = prevFilters.filter((pf) => pf !== selectedPlatform);
-          // If removing this filter make it an empty list, reactivate all filters
-          return filteredFilters.length > 0 ? filteredFilters : platforms;
+        if (allFiltersActive) {
+          // If all filters are active and one is clicked, switch to only that filter
+          return [selectedPlatform];
         } else {
-          // If it is not active, add it
-          return [...prevFilters, selectedPlatform];
+          // Check if the clicked filter is currently active
+          if (prevFilters.includes(selectedPlatform)) {
+            // If it is active, remove it
+            const filteredFilters = prevFilters.filter((pf) => pf !== selectedPlatform);
+            // If removing this filter make it an empty list, reactivate all filters
+            return filteredFilters.length > 0 ? filteredFilters : platforms;
+          } else {
+            // If it is not active, add it
+            return [...prevFilters, selectedPlatform];
+          }
         }
-      }
-    });
+      }),
+    );
   };
 
   //testing filter
@@ -147,26 +185,28 @@ const Main = ({ initialGames, user }) => {
   // }, [activePFilter]);
 
   const handleGFilterSelect = (selectedGenre) => {
-    setActiveGFilter((prevFilters) => {
-      // Check if we are starting from a state where all filters are active
-      const allFiltersActive = prevFilters.length === genre.length;
+    dispatch(
+      setActiveGFilter((prevFilters) => {
+        // Check if we are starting from a state where all filters are active
+        const allFiltersActive = prevFilters.length === genre.length;
 
-      if (allFiltersActive) {
-        // If all filters are active and one is clicked, switch to only that filter
-        return [selectedGenre];
-      } else {
-        // Check if the clicked filter is currently active
-        if (prevFilters.includes(selectedGenre)) {
-          // If it is active, remove it
-          const filteredFilters = prevFilters.filter((pf) => pf !== selectedGenre);
-          // If removing this filter make it an empty list, reactivate all filters
-          return filteredFilters.length > 0 ? filteredFilters : genre;
+        if (allFiltersActive) {
+          // If all filters are active and one is clicked, switch to only that filter
+          return [selectedGenre];
         } else {
-          // If it is not active, add it
-          return [...prevFilters, selectedGenre];
+          // Check if the clicked filter is currently active
+          if (prevFilters.includes(selectedGenre)) {
+            // If it is active, remove it
+            const filteredFilters = prevFilters.filter((pf) => pf !== selectedGenre);
+            // If removing this filter make it an empty list, reactivate all filters
+            return filteredFilters.length > 0 ? filteredFilters : genre;
+          } else {
+            // If it is not active, add it
+            return [...prevFilters, selectedGenre];
+          }
         }
-      }
-    });
+      }),
+    );
   };
 
   useEffect(() => {
@@ -192,8 +232,11 @@ const Main = ({ initialGames, user }) => {
         // Update with the new games data
         console.log('gamesData', gamesData);
         console.log(Array.isArray(gamesData));
-        setGames(gamesData);
-        setCurrentPage(0); //Page rest
+        // setGames(gamesData);
+        dispatch(setGames(gamesData));
+        // setCurrentPage(0);
+        dispatch(setCurrentPage(0));
+        // Page rest
       } catch (error) {
         console.error('Error fetching the games:', error);
       }
@@ -215,13 +258,16 @@ const Main = ({ initialGames, user }) => {
       });
       const data = await response.json();
       if (typeof data === 'object') {
-        console.log('Unliked', data); //delete after test
-        const updatedGames = games.filter((game) => game.name !== data.name); //filter current games to remove liked game
+        console.log('Unliked', data); // delete after test
+        const updatedGames = games.filter((game) => game.name !== data.name); // filter current games to remove liked game
         // const newGameResponse = await fetch('/games'); //fetch from game db?
         // const newGame = await newGameResponse.json();
         // updatedGames.push(newGame);
-        setCurrentGames(updatedGames);
-        setGames(updatedGames);
+
+        // setCurrentGames(updatedGames);
+        dispatch(setCurrentGames(updatedGames));
+        // setGames(updatedGames);
+        dispatch(setGames(updatedGames));
       } else {
         console.log(data);
       }
