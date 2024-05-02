@@ -27,12 +27,6 @@ mongoose
 // Global middlweware
 app.use(express.json());
 
-// route for handling saving data from api to db
-app.post('/apisave', apiSave, (req, res) => {
-  console.log('finished adding games to database');
-  res.sendStatus(200);
-});
-
 // route for handling post request from frontend to filter games
 app.post('/games', getGames, filterGames, (req, res) => {
   // returns array of objects of games

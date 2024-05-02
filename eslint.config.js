@@ -2,7 +2,7 @@ import js from '@eslint/js';
 import react from 'eslint-plugin-react';
 import reactRecommended from 'eslint-plugin-react/configs/recommended.js';
 import globals from 'globals';
-const { nodeBuiltin: node, browser } = globals;
+const { nodeBuiltin: node, browser, mocha } = globals;
 
 export default [
   js.configs.recommended,
@@ -20,6 +20,14 @@ export default [
     languageOptions: {
       globals: {
         ...node,
+      },
+    },
+  },
+  {
+    files: ['server/test/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...mocha,
       },
     },
   },
