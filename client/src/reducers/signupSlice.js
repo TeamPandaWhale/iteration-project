@@ -24,4 +24,4 @@ export const signupSlice = createSlice({
 
 export const { setUsername, setPassword, setError } = signupSlice.actions;
 
-export const signupReducer = signupSlice.reducer;
+export default signupSlice.reducer;
