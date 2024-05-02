@@ -67,7 +67,7 @@ const Main = ({ initialGames, user }) => {
   const [currentGames, setCurrentGames] = useState(
     // Game to display on one page
     // games.slice(0, itemsPerPage) // Start with the first page
-    []
+    [],
   );
   console.log('games', games);
   // Current page index, items per page, and page count
@@ -77,18 +77,16 @@ const Main = ({ initialGames, user }) => {
 
   // Updates games whenever games state or currentPage state change
   useEffect(() => {
-    setCurrentGames(
-      games.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
-    );
+    setCurrentGames(games.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage));
   }, [games, currentPage]);
 
   // Handlers for next and previous buttons
   const goToNextPage = () => {
-    setCurrentPage(prevPage => Math.min(prevPage + 1, pageCount - 1));
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, pageCount - 1));
   };
 
   const goToPreviousPage = () => {
-    setCurrentPage(prevPage => Math.max(prevPage - 1, 0));
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
   };
 
   //-----------------------filters--------------------------------
@@ -120,8 +118,8 @@ const Main = ({ initialGames, user }) => {
 
   //The filters start with all enabled and switch to a mode where only selected filters are active once a user starts interacting with them
 
-  const handlePFilterSelect = selectedPlatform => {
-    setActivePFilter(prevFilters => {
+  const handlePFilterSelect = (selectedPlatform) => {
+    setActivePFilter((prevFilters) => {
       // Check if we are starting from a state where all filters are active
       const allFiltersActive = prevFilters.length === platforms.length;
 
@@ -132,9 +130,7 @@ const Main = ({ initialGames, user }) => {
         // Check if the clicked filter is currently active
         if (prevFilters.includes(selectedPlatform)) {
           // If it is active, remove it
-          const filteredFilters = prevFilters.filter(
-            pf => pf !== selectedPlatform
-          );
+          const filteredFilters = prevFilters.filter((pf) => pf !== selectedPlatform);
           // If removing this filter make it an empty list, reactivate all filters
           return filteredFilters.length > 0 ? filteredFilters : platforms;
         } else {
@@ -150,8 +146,8 @@ const Main = ({ initialGames, user }) => {
   //   console.log(activePFilter);
   // }, [activePFilter]);
 
-  const handleGFilterSelect = selectedGenre => {
-    setActiveGFilter(prevFilters => {
+  const handleGFilterSelect = (selectedGenre) => {
+    setActiveGFilter((prevFilters) => {
       // Check if we are starting from a state where all filters are active
       const allFiltersActive = prevFilters.length === genre.length;
 
@@ -162,9 +158,7 @@ const Main = ({ initialGames, user }) => {
         // Check if the clicked filter is currently active
         if (prevFilters.includes(selectedGenre)) {
           // If it is active, remove it
-          const filteredFilters = prevFilters.filter(
-            pf => pf !== selectedGenre
-          );
+          const filteredFilters = prevFilters.filter((pf) => pf !== selectedGenre);
           // If removing this filter make it an empty list, reactivate all filters
           return filteredFilters.length > 0 ? filteredFilters : genre;
         } else {
@@ -210,7 +204,7 @@ const Main = ({ initialGames, user }) => {
     }
   }, [activePFilter, activeGFilter]); // Fetch games when filters change
 
-  const handleLikedGames = async likedGame => {
+  const handleLikedGames = async (likedGame) => {
     try {
       const response = await fetch('http://localhost:3000/likegame', {
         method: 'POST',
@@ -222,7 +216,7 @@ const Main = ({ initialGames, user }) => {
       const data = await response.json();
       if (typeof data === 'object') {
         console.log('Unliked', data); //delete after test
-        const updatedGames = games.filter(game => game.name !== data.name); //filter current games to remove liked game
+        const updatedGames = games.filter((game) => game.name !== data.name); //filter current games to remove liked game
         // const newGameResponse = await fetch('/games'); //fetch from game db?
         // const newGame = await newGameResponse.json();
         // updatedGames.push(newGame);
@@ -236,7 +230,7 @@ const Main = ({ initialGames, user }) => {
     }
   };
   return (
-    <div className="main">
+    <div className='main'>
       <Header />
       <CardList
         games={currentGames}
@@ -246,15 +240,15 @@ const Main = ({ initialGames, user }) => {
         isPreviousDisabled={currentPage === 0}
         isNextDisabled={currentPage === pageCount - 1}
       />
-      <div className="filters">
-        <div className="platform-filter">
+      <div className='filters'>
+        <div className='platform-filter'>
           <PlatformFilter
             platforms={platforms}
             activePFilter={activePFilter}
             onFilterSelect={handlePFilterSelect}
           />
         </div>
-        <div className="genre-filter">
+        <div className='genre-filter'>
           <GenreFilter
             genre={genre}
             activeGFilter={activeGFilter}

@@ -1,20 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
-import appReducer from './reducers/appSlice';
-import loginReducer from './reducers/loginSlice';
-import signupReducer from './reducers/signupSlice';
-
+import appReducer from './reducers/appSlice.js';
+import loginReducer from './reducers/loginSlice.js';
+import signupReducer from './reducers/signupSlice.js';
 
 const store = configureStore({
   reducer: {
     app: appReducer,
     login: loginReducer,
-    signup: signupReducer
+    signup: signupReducer,
   },
 });
 
 export default store;
-
-
 
 // import React, { useRef } from 'react';
 // import { fetchReceiptData } from '../reducers/receiptSlicer';
@@ -25,7 +22,7 @@ export default store;
 //   const dispatch = useDispatch();
 //   const Navigate = useNavigate();
 //   const fileInput = useRef(null);
-  
+
 //   const handleUpload = async () => {
 //     const file = fileInput.current.files[0];
 //     if (!file) {

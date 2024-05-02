@@ -96,6 +96,7 @@ const LoginPage = ({ setIsAuthenticated, setInitialGames, setUser }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          // username: username,
           username: useSelector((state) => state.login.username),
           platforms: platforms,
           genres: genres,
@@ -127,11 +128,23 @@ const LoginPage = ({ setIsAuthenticated, setInitialGames, setUser }) => {
         {error && <div className='error-message'>{error}</div>}
         <div className='input-field'>
           <label htmlFor='username'>Username</label>
-          <input type='text' id='username' value={username} onChange={handleUsernameChange} />
+          {/* <input type='text' id='username' value={username} onChange={handleUsernameChange} /> */}
+          <input
+            type='text'
+            id='username'
+            value={(state) => state.login.username}
+            onChange={handleUsernameChange}
+          />
         </div>
         <div className='input-field'>
           <label htmlFor='password'>Password</label>
-          <input type='password' id='password' value={password} onChange={handlePasswordChange} />
+          {/* <input type='password' id='password' value={password} onChange={handlePasswordChange} /> */}
+          <input
+            type='password'
+            id='password'
+            value={(state) => state.login.password}
+            onChange={handlePasswordChange}
+          />
         </div>
         <div className='action-buttons'>
           <button type='submit'>Login</button>

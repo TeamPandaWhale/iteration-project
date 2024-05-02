@@ -3,16 +3,17 @@ import Header from '../components/Header.jsx';
 
 import { useNavigate } from 'react-router-dom';
 import '../stylesheets/Login.scss';
-import '../stylesheets/Signup.scss'
-
+import '../stylesheets/Signup.scss';
 
 const SignupPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-
+  // Transitioned to Redux Toolkit
+  // const [username, setUsername] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [error, setError] = useState('');
 
   const navigate = useNavigate();
+  // added dispatch hook
+  const dispatch = useDispatch();
 
   // Handler for submitting
   const handleSignup = async (e) => {
@@ -21,7 +22,6 @@ const SignupPage = () => {
     setError('');
     try {
       const response = await fetch(`http://localhost:3000/createuser`, {
-
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,8 +34,8 @@ const SignupPage = () => {
       if (response.ok && data) {
         navigate('/login');
       } else {
-        console.log(response)
-        setError('Username already exists') 
+        console.log(response);
+        setError('Username already exists');
       }
     } catch (err) {
       setError('Invalid username or password');
@@ -55,24 +55,15 @@ const SignupPage = () => {
     <div className='sign-up'>
       <Header />
       <form onSubmit={handleSignup}>
-        {error && <div className='error-message'>{error}</div>} {/* Display error message but maybe change to <p> */}
+        {error && <div className='error-message'>{error}</div>}{' '}
+        {/* Display error message but maybe change to <p> */}
         <div className='input-field'>
           <label htmlFor='username'>Username</label>
-          <input
-            type='text'
-            id='username'
-            value={username}
-            onChange={handleUsernameChange}
-          />
+          <input type='text' id='username' value={username} onChange={handleUsernameChange} />
         </div>
         <div className='input-field'>
           <label htmlFor='password'>Password</label>
-          <input
-            type='password'
-            id='password'
-            value={password}
-            onChange={handlePasswordChange}
-          />
+          <input type='password' id='password' value={password} onChange={handlePasswordChange} />
         </div>
         <div className='action-buttons'>
           <button type='submit'>Sign up</button>
@@ -80,7 +71,6 @@ const SignupPage = () => {
       </form>
     </div>
   );
-}
-
+};
 
 export default SignupPage;
