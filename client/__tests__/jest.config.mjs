@@ -5,6 +5,9 @@
 
 /** @type {import('jest').Config} */
 const config = {
+
+  extensionsToTreatAsEsm: ['.js'],
+
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -60,10 +63,10 @@ const config = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  // globalSetup: undefined,
+  // globalSetup: './setup.js',
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  // globalTeardown: undefined,
+  // globalTeardown: './teardown.js',
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -101,7 +104,7 @@ const config = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  // preset: "jest-puppeteer",
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -174,7 +177,7 @@ const config = {
   // testRunner: "jest-circus/runner",
 
   // A map from regular expressions to paths to transformers
-  // transform: undefined,
+  transform: { '\\.[jt]sx?$': 'babel-jest' },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [

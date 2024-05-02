@@ -6,7 +6,7 @@ const initialState = {
   error: ''
 };
 
-export const loginSlice = createSlice({
+export const signupSlice = createSlice({
   name: 'login',
   initialState,
   reducers: {
@@ -22,6 +22,6 @@ export const loginSlice = createSlice({
   }
 });
 
-export const { setUsername, setPassword, setError } = loginSlice.actions;
+export const { setUsername, setPassword, setError } = signupSlice.actions;
 
-export const loginReducer = loginSlice.reducer;
+export const signupReducer = signupSlice.reducer;

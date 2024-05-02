@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../components/Header.jsx';
 
 import CardList from '../components/CardList.jsx';
@@ -215,7 +215,6 @@ const Main = ({ initialGames, user }) => {
       const response = await fetch('http://localhost:3000/likegame', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ userName: user, gameName: likedGame }),

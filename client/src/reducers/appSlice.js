@@ -3,7 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isAuthenticated: false,
   initialGames: [],
-  user: ''
+  user: '',
+  // Not sure if they ever use the mockGames they hard-coded in Main.jsx
+  // We might need to fetch games and update games array here
+  games: []
 };
 
 export const appSlice = createSlice({
@@ -23,6 +26,6 @@ export const appSlice = createSlice({
   }
 });
 
-export const { changePage, isLoading } = appSlice.actions;
+export const { loggedIn, setGames, setUser } = appSlice.actions;
 
 export default appSlice.reducer;
